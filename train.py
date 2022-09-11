@@ -99,7 +99,7 @@ def main():
         model = NgramModelTextGeneration(input())
     model.fit()
     pkl_filename = args.model
-    with open(pkl_filename, 'w') as file:
+    with open(pkl_filename, 'wb') as file:
         pickle.dump(model, file)
 
 if __name__ == "__main__":
