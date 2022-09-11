@@ -9,7 +9,7 @@ import argparse
 
 def get_tokens(text):
     tokens = list()
-    alphabet = re.compile(u'[а-яА-Я0-9-]+|[.]+')
+    alphabet = re.compile(u'[а-яА-Я0-9-]+|[.,!]+')
     with io.open(text, encoding='utf-8') as data:
         for line in data:
             for token in alphabet.findall(line.lower()):
@@ -35,7 +35,7 @@ def prefix_to_tuple(prefix):
 class NgramModelTextGeneration:
     dict_counter = defaultdict(lambda: Counter())
 
-    def __init__(self, text, number_of_words = 7):
+    def __init__(self, text, number_of_words = 9):
         self.text = text
         self.number_of_words = number_of_words + 1
 
@@ -56,7 +56,7 @@ class NgramModelTextGeneration:
             endings = self.get_k_most_popular_endings(n_gram[length:])
             for i in range(len(endings)):
                 words[endings[i]] = self.dict_counter[n_gram[length:]][endings[i]]
-            if (len(words) > 2 or ( length > 3 and len(words) > 0)):
+            if (len(words) > 1 or ( length > 3 and len(words) > 0)):
               return random.choice(list(words)[-3:])
             else:
               words.clear()
@@ -99,7 +99,7 @@ def main():
         model = NgramModelTextGeneration(input())
     model.fit()
     pkl_filename = args.model
-    with open(pkl_filename, 'wb') as file:
+    with open(pkl_filename, 'w') as file:
         pickle.dump(model, file)
 
 if __name__ == "__main__":
