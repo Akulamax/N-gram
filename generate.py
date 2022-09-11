@@ -10,7 +10,7 @@ def main():
     parser.add_argument("--length", required=True)
     args = parser.parse_args()
     pkl_filename = args.model
-    with open(pkl_filename, 'rb') as file:
+    with open(pkl_filename, 'r') as file:
         pickle_model = pickle.load(file)
     prefix = args.prefix if args.prefix else ""
     result = pickle_model.generate(int(args.length), prefix)
